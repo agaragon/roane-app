@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  www:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/home/app
+    networks:
+      - mysql-network
+    restart: always
+    depends_on:
+      - mysqldb
+  mysqldb:
+    image: mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+    networks:
+      - mysql-network
+
+networks:
+  mysql-network:
+    driver: bridge
